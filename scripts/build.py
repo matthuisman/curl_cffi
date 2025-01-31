@@ -125,7 +125,8 @@ ffibuilder.set_source(
     ],
     extra_compile_args=(["-Wno-implicit-function-declaration"] if system == "Darwin" else []),
     extra_link_args = [
-        "/LIBPATH:./python/lib",
+        f"/LIBPATH:{os.path.expanduser('./python/lib')}",
+        '/DISALLOWLIB:python3.lib',
         "/DEFAULTLIB:python3.8.lib",
         "/VERBOSE"
     ],
