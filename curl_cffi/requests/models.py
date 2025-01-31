@@ -34,6 +34,19 @@ class Request:
         self.method = method
 
 
+class RawReader:
+    def __init__(self, response):
+        self.response = response
+
+    def read(self, amt=None):
+        data = b""
+        for chunk in self.response.iter_content():
+            data += chunk
+            if amt and len(data) >= amt:
+                break
+        return data
+
+
 class Response:
     """Contains information the server sends.
 
@@ -168,6 +181,10 @@ class Response:
 
         if pending is not None:
             yield pending
+
+    @property
+    def raw(self):
+        return RawReader(self)
 
     def iter_content(self, chunk_size=None, decode_unicode=False):
         """
