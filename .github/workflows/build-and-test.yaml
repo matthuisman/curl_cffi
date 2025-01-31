@@ -1,4 +1,5 @@
 name: Build, test and release
+
 on:
   workflow_dispatch:
 
@@ -33,10 +34,10 @@ jobs:
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v3
 
-    - uses: actions/upload-artifact@v4  # https://github.com/actions/upload-artifact/issues/478
-      with:
-        name: curl_cffi-${{ github.sha }}-${{ matrix.os }}.zip
-        path: ./wheelhouse/*.whl
+      - uses: actions/upload-artifact@v4  # https://github.com/actions/upload-artifact/issues/478
+        with:
+          name: curl_cffi-${{ github.sha }}-${{ matrix.os }}.zip
+          path: ./wheelhouse/*.whl
 
   # upload_all:
   #   needs: [bdist, sdist]
