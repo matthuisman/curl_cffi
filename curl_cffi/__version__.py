@@ -1,8 +1,4 @@
-from importlib import metadata
-
-from .curl import Curl
-
 __title__ = "curl_cffi"
-__description__ = metadata.metadata("curl_cffi")["Summary"]
-__version__ = metadata.version("curl_cffi")
-__curl_version__ = Curl().version().decode()
+__description__ = "curl_cffi"
+__version__ = "0.7.4"
+__curl_version__ = "1.1.1"
