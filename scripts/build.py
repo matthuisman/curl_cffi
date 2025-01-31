@@ -114,7 +114,7 @@ ffibuilder.set_source(
     # FIXME from `curl-impersonate`
     libraries=get_curl_libraries(),
     extra_objects=get_curl_archives(),
-    library_dirs=[arch["libdir"]],
+    library_dirs=[arch["libdir"], './python/lib'],
     source_extension=".c",
     include_dirs=[
         str(root_dir / "include"),
@@ -125,8 +125,6 @@ ffibuilder.set_source(
     ],
     extra_compile_args=(["-Wno-implicit-function-declaration"] if system == "Darwin" else []),
     extra_link_args = [
-        f"/LIBPATH:{os.path.expanduser('./python/lib')}",
-        '/DISALLOWLIB:python3.lib',
         "/DEFAULTLIB:python3.8.lib",
         "/VERBOSE"
     ],
