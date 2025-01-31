@@ -108,7 +108,7 @@ before-all = "gmake preprocess"
 
 [tool.cibuildwheel.windows]
 before-build = "pip install delvewheel"
-repair-wheel-command = "delvewheel repair --add-path ./lib64;./lib32 -w {dest_dir} {wheel}"
+repair-wheel-command = "delvewheel repair --exclude python3.8.dll --add-path ./lib64;./lib32 -w {dest_dir} {wheel}"
 
 
 [tool.pytest.ini_options]
