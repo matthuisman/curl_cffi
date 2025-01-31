@@ -114,7 +114,7 @@ ffibuilder.set_source(
     # FIXME from `curl-impersonate`
     libraries=get_curl_libraries(),
     extra_objects=get_curl_archives(),
-    library_dirs=[arch["libdir"], './python/lib64'],
+    library_dirs=[arch["libdir"], f'./python/lib{arch["pointer_size"]}'],
     source_extension=".c",
     include_dirs=[
         str(root_dir / "include"),
