@@ -1,5 +1,6 @@
 __all__ = [
     "Session",
+    "AsyncSession",
     "BrowserType",
     "BrowserTypeLiteral",
     "CurlWsFlag",
@@ -36,7 +37,7 @@ from .errors import RequestsError
 from .headers import Headers, HeaderTypes
 from .impersonate import BrowserType, BrowserTypeLiteral, ExtraFingerprints, ExtraFpDict
 from .models import Request, Response
-from .session import HttpMethod, ProxySpec, Session, ThreadType
+from .session import AsyncSession, HttpMethod, ProxySpec, Session, ThreadType
 from .websockets import WebSocket, WebSocketError, WsCloseCode
 
 

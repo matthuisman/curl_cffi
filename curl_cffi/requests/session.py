@@ -1,11 +1,11 @@
-#import asyncio
+import asyncio
 import math
 import queue
 import threading
 import warnings
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
-from contextlib import contextmanager, suppress
+from contextlib import asynccontextmanager, contextmanager, suppress
 from functools import partialmethod
 from io import BytesIO
 from json import dumps
@@ -26,7 +26,7 @@ from urllib.parse import ParseResult, parse_qsl, quote, unquote, urlencode, urlj
 
 from typing_extensions import Unpack
 
-from .. import Curl, CurlError, CurlHttpVersion, CurlInfo, CurlOpt, CurlSslVersion
+from .. import AsyncCurl, Curl, CurlError, CurlHttpVersion, CurlInfo, CurlOpt, CurlSslVersion
 from ..curl import CURL_WRITEFUNC_ERROR, CurlMime
 from .cookies import Cookies, CookieTypes, CurlMorsel
 from .exceptions import InvalidURL, ImpersonateError, RequestException, SessionClosed, code2error
@@ -245,7 +245,7 @@ def _peek_queue(q: queue.Queue, default=None):
         return default
 
 
-def _peek_aio_queue(q, default=None):
+def _peek_aio_queue(q: asyncio.Queue, default=None):
     try:
         return q._queue[0]  # type: ignore
     except IndexError:
@@ -1128,7 +1128,7 @@ class AsyncSession(BaseSession):
         self,
         *,
         loop=None,
-        async_curl = None,
+        async_curl: Optional[AsyncCurl] = None,
         max_clients: int = 10,
         **kwargs: Unpack[BaseSessionParams],
     ):
@@ -1192,7 +1192,7 @@ class AsyncSession(BaseSession):
     @property
     def acurl(self):
         if self._acurl is None:
-            self._acurl = None
+            self._acurl = AsyncCurl(loop=self.loop)
         return self._acurl
 
     def init_pool(self):
@@ -1244,6 +1244,7 @@ class AsyncSession(BaseSession):
         else:
             curl.close()
 
+    @asynccontextmanager
     async def stream(self, *args, **kwargs):
         """Equivalent to ``async with request(..., stream=True) as r:``"""
         rsp = await self.request(*args, **kwargs, stream=True)
